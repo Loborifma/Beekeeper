@@ -1,16 +1,17 @@
 package com.mainPackage;
 
-import java.util.Random;
-
 public class Bees {
-    private int ageBee;
-    private int capability;
+    private final int ageBee;
+    private final int capability;
 
-    Random random = new Random(1);
+    private final int MAX_AGE = 60;
+    private final int MIN_AGE = 1;
+    private final int MAX_CAPABILITY = 75;
+    private final int MIN_CAPABILITY = 15;
 
     Bees(){
-        this.ageBee = random.nextInt(60);
-        this.capability = random.nextInt(5);
+        this.ageBee = MIN_AGE + (int)(Math.random()* MAX_AGE);
+        this.capability = MIN_CAPABILITY + (int) (Math.random()* MAX_CAPABILITY);
     }
 
     public int getAgeBee() {

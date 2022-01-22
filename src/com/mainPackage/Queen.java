@@ -1,23 +1,21 @@
 package com.mainPackage;
 
-import java.util.Random;
-
 public class Queen {
 
-    private int ageQueen;
-    private boolean fertility;
+    private final int ageQueen;
+    private final int fertility;
 
-    Random random = new Random(1);
-
-    int max = 2190;
-    int min = 1;
+    private final int MAX_AGE = 219;
+    private final int MIN_AGE = 1;
+    private final int MAX_FERTILITY = 350;
+    private final int MIN_FERTILITY = 150;
 
     Queen(){
-        this.ageQueen = min + (int) (Math.random()*max);
-        this.fertility = true;
+        this.ageQueen = MIN_AGE + (int) (Math.random()* MAX_AGE);
+        this.fertility = MIN_FERTILITY + (int) (Math.random()*MAX_FERTILITY);
     }
 
-    public boolean isFertility() {
+    public int getFertility() {
         return fertility;
     }
 
