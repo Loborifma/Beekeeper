@@ -9,8 +9,19 @@ public class Queen {
 
     Random random = new Random(1);
 
+    int max = 2190;
+    int min = 1;
+
     Queen(){
-        this.ageQueen = random.nextInt(6);
+        this.ageQueen = min + (int) (Math.random()*max);
         this.fertility = true;
+    }
+
+    public boolean isFertility() {
+        return fertility;
+    }
+
+    public int getAgeQueen() {
+        return ageQueen;
     }
 }
