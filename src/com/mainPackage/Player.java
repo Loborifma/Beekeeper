@@ -1,17 +1,17 @@
 package com.mainPackage;
 
 public class Player {
-    private int money;
+    private double playerMoney;
 
-    public Player(int money) {
-        this.money = money;
+    public Player(double money) {
+        this.playerMoney = money;
     }
 
-    public int getMoney() {
-        return money;
+    public double getPlayerMoney() {
+        return playerMoney;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setPlayerMoney(double playerMoney) {
+        this.playerMoney = playerMoney;
     }
 }

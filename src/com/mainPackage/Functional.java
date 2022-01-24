@@ -12,12 +12,48 @@ public class Functional {
 
 
 
+
+//    Functional of store =======================================================================
+
+    Player player = new Player(20);
+
+    public void sellTheHoney(){
+        double money = sot.getCapacitySots() * 0.00001;
+        player.setPlayerMoney(money);
+        sot.setCapacitySots(4_500_000);
+    }
+
+    public void goToStore() throws InterruptedException {
+        System.out.println("\n1)Bee-queen - 20$" +
+                           "\n2)Leave the store");
+
+        int variationOfAction = scanner.nextInt();
+
+        switch (variationOfAction){
+            case 1:
+                if(queens.size() > 1){
+                    System.out.println("You cant create more then 1 queen");
+                }else {
+                    buyTheQueen();
+                }
+                showInfo();
+                break;
+            case 2:
+                choseAction();
+                break;
+        }
+    }
+
+
+
+
+
 //    Functional of sots =======================================================================
 
     Sots sot = new Sots(4_500_000);
 
     public void harvest(){
-        int sumOfHoney = sot.getCapacitySots() - resultCapabilityBees();
+        int sumOfHoney = sot.getCapacitySots() - accumulationOfHoney;
         sot.setCapacitySots(sumOfHoney);
         accumulationOfHoney = 0;
     }
@@ -38,8 +74,8 @@ public class Functional {
 
     public int resultCapabilityBees(){
         int result = 0;
-        for(int i = 0; i < bees.size(); i++){
-            result = result + bees.get(i).getCapability();
+        for (Bees bee : bees) {
+            result = result + bee.getCapability();
         }
         return result;
     }
@@ -52,10 +88,12 @@ public class Functional {
 
     ArrayList<Queen> queens = new ArrayList<>();
 
-    public Queen createQueen(){
+    public Queen buyTheQueen(){
         queens.add(new Queen());
         int counter = -1;
         counter++;
+        double coastOfQueen = player.getPlayerMoney() - 20;
+        player.setPlayerMoney(coastOfQueen);
         return queens.get(counter);
     }
 
@@ -67,8 +105,8 @@ public class Functional {
 
     Integer counter = 0;
 
-    public void feedTheQueen(){
-        if(counter == days) {
+    public void feedTheQueen() throws InterruptedException {
+        if(counter.equals(days)) {
             for (int i = 0; i < queens.get(0).getFertility(); i++) {
                 bees.add(new Bees());
             }
@@ -85,28 +123,24 @@ public class Functional {
 
 //    Functional of game field =======================================================================
 
-    public void choseAction(){
+    public void choseAction() throws InterruptedException {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("What is your actions: " +
-            "\n1)Create queen" +
+            "\n1)Go to the store" +
             "\n2)Feed the queen" +
             "\n3)Harvest" +
-            "\n4)Wait" +
-            "\n5)Show info" +
-            "\n6)Clear the screen" +
-            "\n7)Leave");
+            "\n4)Sell honey" +
+            "\n5)Wait" +
+            "\n6)Show info" +
+            "\n7)Clear the screen" +
+            "\n8)Leave the game");
 
     int variantOfAction = scanner.nextInt();
 
     switch (variantOfAction){
         case 1 :
-            if(queens.size() > 1){
-                System.out.println("You cant create more then 1 queen");
-            }else {
-                createQueen();
-            }
-            showInfo();
+            goToStore();
             break;
         case 2 :
             if(queens.isEmpty()){
@@ -123,16 +157,20 @@ public class Functional {
             showInfo();
             break;
         case 4 :
-            waitDay();
+            sellTheHoney();
             showInfo();
             break;
         case 5 :
+            waitDay();
             showInfo();
             break;
         case 6 :
-            clearScreen();
+            showInfo();
             break;
         case 7 :
+            clearScreen();
+            break;
+        case 8 :
             leaveGame();
             break;
     }
@@ -147,10 +185,10 @@ public class Functional {
 
     Queen queenInfo = null;
 
-    public void showInfo(){
+    public void showInfo() throws InterruptedException {
 //        Check if there is a queen and if queen alive
         if(queens.isEmpty()){
-            System.out.println("\nYou need to create the queen\n");
+            System.out.println("\nYou need to buy the queen\n");
             choseAction();
         }else {
             queenInfo = queens.get(0);
@@ -162,23 +200,37 @@ public class Functional {
         }
 //        End of check
         System.out.println("================================================");
-        System.out.println("Days: " + days +"\n");
+
+
+        System.out.println("Days: " + days +"              Money :" + player.getPlayerMoney() +"$\n");
         System.out.println("Queen: " +
                 "\nAge - "+ageOfQueen+" days left"+
                 "\nFertility - "+queenInfo.getFertility());
+
+
         System.out.println("---------------------------------------");
+
+
         System.out.println("Bees: " +
                 "\nAmount: " + bees.size() +
                 "\nCapability: " + resultCapabilityBees());
+
+
         System.out.println("---------------------------------------");
+
+
         System.out.println("Amount of honey: " + accumulationOfHoney + "mg" +
                 "\nFree space in sots: "+sot.getCapacitySots()+ "mg");
-        System.out.println("---------------------------------------");
+
+
+        System.out.println("================================================\n");
+
+        Thread.sleep(2000);
 
         choseAction();
     }
 
-    public void clearScreen(){
+    public void clearScreen() throws InterruptedException {
         for(int i = 0; i < 31; i++){
             System.out.println();
         }
