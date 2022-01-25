@@ -3,6 +3,7 @@ package com.mainPackage;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class Functional {
 
 //    Common parameters =========================================================================
@@ -18,14 +19,17 @@ public class Functional {
     Player player = new Player(20);
 
     public void sellTheHoney(){
-        double money = sot.getCapacitySots() * 0.00001;
+        double money = ((sot.getInitialCapacitySots() - sot.getCapacitySots()) * 0.00001) + player.getPlayerMoney();
         player.setPlayerMoney(money);
-        sot.setCapacitySots(4_500_000);
+        int capacity = sot.getInitialCapacitySots();
+        sot.setCapacitySots(capacity);
+        System.out.println("\nYou sell honey from sots\n");
     }
 
     public void goToStore() throws InterruptedException {
         System.out.println("\n1)Bee-queen - 20$" +
-                           "\n2)Leave the store");
+                           "\n2)Update the sots - 6.5$" +
+                           "\n3)Leave the store");
 
         int variationOfAction = scanner.nextInt();
 
@@ -39,6 +43,10 @@ public class Functional {
                 showInfo();
                 break;
             case 2:
+                updateSots();
+                showInfo();
+                break;
+            case 3:
                 choseAction();
                 break;
         }
@@ -50,18 +58,38 @@ public class Functional {
 
 //    Functional of sots =======================================================================
 
-    Sots sot = new Sots(4_500_000);
+    Sots sot = new Sots(4_500_000, 4_500_000);
 
     public void harvest(){
-        int sumOfHoney = sot.getCapacitySots() - accumulationOfHoney;
-        sot.setCapacitySots(sumOfHoney);
-        accumulationOfHoney = 0;
+        if(accumulationOfHoney <= sot.getCapacitySots()) {
+            int sumOfHoney = sot.getCapacitySots() - accumulationOfHoney;
+            sot.setCapacitySots(sumOfHoney);
+            accumulationOfHoney = 0;
+        }else {
+            int remainder = accumulationOfHoney - sot.getCapacitySots();
+            sot.setCapacitySots(0);
+            accumulationOfHoney = remainder;
+        }
+        System.out.println("\nYou harvest the honey!\n");
     }
 
     Integer accumulationOfHoney = 0;
 
     public void accumulationHoney(){
         accumulationOfHoney = accumulationOfHoney + resultCapabilityBees();
+    }
+
+    public void updateSots(){
+        if(player.getPlayerMoney() >= 6.5) {
+            double coast = player.getPlayerMoney() - 6.5;
+            player.setPlayerMoney(coast);
+            int capacity = sot.getCapacitySots() + 4_500_000;
+            sot.setCapacitySots(capacity);
+            sot.setInitialCapacitySots(capacity);
+            System.out.println("\nYour sots was updated (+4_500_000)\n");
+        }else {
+            System.out.println("\n Not enough money\n");
+        }
     }
 
 
@@ -94,6 +122,7 @@ public class Functional {
         counter++;
         double coastOfQueen = player.getPlayerMoney() - 20;
         player.setPlayerMoney(coastOfQueen);
+        System.out.println("\nCongrats, you buy the queen!\n");
         return queens.get(counter);
     }
 
@@ -106,10 +135,12 @@ public class Functional {
     Integer counter = 0;
 
     public void feedTheQueen() throws InterruptedException {
-        if(counter.equals(days)) {
+        if(counter <= days) {
             for (int i = 0; i < queens.get(0).getFertility(); i++) {
                 bees.add(new Bees());
             }
+            System.out.println("\nYou fed queen!\n");
+            counter = days;
             counter++;
         }else {
             System.out.println("\nYour queen are full\n");
@@ -134,7 +165,7 @@ public class Functional {
             "\n5)Wait" +
             "\n6)Show info" +
             "\n7)Clear the screen" +
-            "\n8)Leave the game");
+            "\n8)Leave the game\n");
 
     int variantOfAction = scanner.nextInt();
 
@@ -150,19 +181,19 @@ public class Functional {
             }else {
                 feedTheQueen();
             }
-            showInfo();
+            choseAction();
             break;
         case 3 :
             harvest();
-            showInfo();
+            choseAction();
             break;
         case 4 :
             sellTheHoney();
-            showInfo();
+            choseAction();
             break;
         case 5 :
             waitDay();
-            showInfo();
+            choseAction();
             break;
         case 6 :
             showInfo();
@@ -173,6 +204,9 @@ public class Functional {
         case 8 :
             leaveGame();
             break;
+        default:
+            System.out.println("\nSeems you choose the wrong action!\n");
+            choseAction();
     }
 }
 
@@ -181,6 +215,7 @@ public class Functional {
     public void waitDay() {
         days = days + 1;
         accumulationHoney();
+        System.out.println("\nYou wait one day\n");
     }
 
     Queen queenInfo = null;
@@ -224,8 +259,6 @@ public class Functional {
 
 
         System.out.println("================================================\n");
-
-        Thread.sleep(2000);
 
         choseAction();
     }
