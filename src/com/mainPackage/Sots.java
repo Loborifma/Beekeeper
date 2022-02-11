@@ -5,9 +5,9 @@ public class Sots {
     private int capacitySots;
     private int initialCapacitySots;
 
-    public Sots(int capacitySots, int initialCapacitySots) {
-        this.capacitySots = capacitySots;
-        this.initialCapacitySots = initialCapacitySots;
+    public Sots() {
+        this.capacitySots = 4_500_000;
+        this.initialCapacitySots = 4_500_000;
     }
 
     public int getCapacitySots() {

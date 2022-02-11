@@ -3,8 +3,8 @@ package com.mainPackage;
 public class Player {
     private double playerMoney;
 
-    public Player(double money) {
-        this.playerMoney = money;
+    public Player() {
+        this.playerMoney = 20;
     }
 
     public double getPlayerMoney() {
